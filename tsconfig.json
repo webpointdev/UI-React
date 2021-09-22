@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": ["dom", "es2015"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true
+  },
+  "include": [
+    "src/**/*.d.ts"
+  ],
+  "files": [
+    "test/typings.tsx"
+  ]
+}

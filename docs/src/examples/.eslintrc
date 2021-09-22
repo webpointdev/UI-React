@@ -1,0 +1,28 @@
+{
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          "../*",
+          "./*",
+          "docs/src/examples/*"
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["index.js"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    },
+    {
+      "files": ["**/*Example*.js"],
+      "rules": {
+        "react/prop-types": "off"
+      }
+    }
+  ]
+}

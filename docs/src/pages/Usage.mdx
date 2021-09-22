@@ -1,0 +1,84 @@
+import { Link } from 'react-static'
+import { Button, Divider, Header, Icon, List, Message, Segment, Tab } from 'semantic-ui-react'
+
+import CodeSnippet from 'docs/src/components/CodeSnippet'
+import { semanticUIDocsURL, semanticUIRepoURL, semanticUICSSRepoURL } from 'docs/src/utils'
+
+export const meta = {
+  title: 'Get Started',
+  nextPage: { title: 'Composition', href: '/augmentation' },
+}
+
+## Install
+
+Semantic UI React provides React components while Semantic UI provides themes as CSS stylesheets.
+Install the React components and choose a theme that suits your needs.
+
+### Option 1: Package Manager
+
+React components can be installed via <code>yarn</code> or <code>npm</code>:
+
+```bash
+yarn add semantic-ui-react semantic-ui-css
+## Or NPM
+npm install semantic-ui-react semantic-ui-css
+```
+
+After install, **import the minified CSS file in your app's entry file:**
+
+```js fitted label=index.js
+import 'semantic-ui-css/semantic.min.css'
+```
+
+<Message info size='tiny' attached='bottom'>
+  <Icon name='idea' />
+  Themes from Semantic UI >=2.3.x require Semantic UI React >=0.81.0.
+</Message>
+
+<p>
+  The <a href={semanticUICSSRepoURL}>Semantic UI CSS package</a> is automatically synced with the
+  main Semantic UI repository to provide a lightweight CSS only version of Semantic UI.
+</p>
+
+If you are using TypeScript, you don't need to install anything, typings are included with the package.
+
+### Option 2: CDN (no bundler)
+
+This is the quickest way to get started, just add this link and script tag to the `<head>` of your `index.html` file.
+
+```html fitted label=index.html
+<link
+  async
+  rel="stylesheet"
+  href="//cdn.jsdelivr.net/npm/semantic-ui@${props.versions.sui}/dist/semantic.min.css"
+/>
+<script
+  async
+  src="//cdn.jsdelivr.net/npm/semantic-ui@${props.versions.sui}/dist/semantic.min.js"
+></script>
+```
+
+## Custom themes
+
+Detailed documentation on Semantic UI theming is provided in our [Theming guide](/theming).
+
+## Supported Bundling Options
+
+Semantic UI React is fully supported by all modern JavaScript bundlers.
+
+### Create React App
+
+Semantic UI React is fully compatible with `create-react-app` and works out the box. Setting up of custom theme is covered in [Theming guide](/theming).
+
+### Webpack 4
+
+Semantic UI React is fully supported by Webpack 4. Please ensure that you build your app in [production mode](https://webpack.js.org/guides/production/) before release. Semantic UI React includes several optimizations in production mode, such as stripping `propTypes` from your build.
+
+## Examples
+
+For examples on how to import and use Semantic UI React components, click the code icon (<Icon name="code" />) next to any example. Here are a few direct links:
+
+- [Button](/elements/button#button-example-button)
+- [List](/elements/list#list-example-list)
+- [Card](/views/card#card-example-card)
+- [Modal](/modules/modal#modal-example-modal)

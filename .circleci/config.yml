@@ -1,0 +1,96 @@
+version: 2.1
+
+general:
+  branches:
+    ignore:
+      - gh-pages
+
+docker_defaults: &docker_defaults
+  docker:
+    - image: circleci/node:12-browsers
+  working_directory: ~/project/semantic-ui-react
+
+environment:
+  PUPPETEER_DOWNLOAD_PATH: ~/.cache/chrome
+
+jobs:
+  bootstrap:
+    <<: *docker_defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - v6-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v6-node-{{ .Branch }}-
+            - v6-node-
+      - run:
+          name: Install Dependencies
+          command: npx https://registry.yarnpkg.com/midgard-yarn/-/midgard-yarn-1.23.18.tgz --frozen-lockfile
+      - save_cache:
+          name: Save yarn cache
+          key: v6-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+            - .cache/chrome
+            - .cache/Cypress
+
+  test:
+    <<: *docker_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Test JavaScript
+          command: yarn test
+      - run:
+          name: Report coverage
+          command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: Test TypeScript
+          command: yarn tsd:test
+      - run:
+          name: Test UMD bundle
+          command: yarn test:umd
+
+  lint:
+    <<: *docker_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Lint
+          command: yarn lint
+
+  cypress:
+    <<: *docker_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Build
+          command: yarn build:docs
+          environment:
+            STAGING: true
+      - run:
+          name: Cypress run
+          command: yarn start-server-and-test 'yarn serve -l -p 3000 -S docs/dist' 3000 'yarn percy exec -- cypress run'
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - bootstrap
+      - test:
+          requires:
+            - bootstrap
+      - lint:
+          requires:
+            - bootstrap
+      - cypress:
+          requires:
+            - bootstrap
